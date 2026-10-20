@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — implemented from design-system/lahore-prime-estates/MASTER.md
+ * Contrast ratios in the comments are measured WCAG values, not estimates.
+ */
+@theme {
+  /* Navy */
+  --color-navy-950: #071426;
+  --color-navy-900: #0b1f3a;
+  --color-navy-800: #123156;
+  --color-navy-700: #1b4070;
+  --color-navy-100: #dbe3ee;
+
+  /* Warm gold */
+  --color-gold-700: #8a5306;
+  --color-gold-600: #9a5d07; /* 4.56:1 on panel, 5.02:1 on paper — gold that is safe as small text on any light band */
+  --color-gold-500: #c9a227; /* decorative on light, AA text on navy */
+  --color-gold-400: #d4af37; /* 7.86:1 on navy-900 */
+  --color-gold-100: #f2e3b8;
+  --color-gold-50: #f7efd8;
+
+  /* Neutrals */
+  --color-paper: #faf8f5; /* page background */
+  --color-surface: #ffffff; /* cards */
+  --color-panel: #f1ede6; /* alternating band */
+  --color-ink: #1a2433; /* body copy, 14.74:1 on paper */
+  --color-muted: #4a5568; /* secondary copy, 7.10:1 on paper */
+  --color-line: #d8d2c6; /* decorative borders */
+  --color-line-strong: #6e675c; /* form-control borders, 5.27:1 */
+  --color-danger: #b91c1c;
+  --color-whatsapp: #0f7d3f; /* 5.2:1 with white text — WhatsApp green, darkened to clear AA */
+
+  /* Type */
+  --font-display: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Segoe UI", Nastaliq, serif;
+
+  /* Radius + shadows */
+  --radius-card: 16px;
+  --shadow-soft: 0 1px 2px rgb(11 31 58 / 0.06), 0 4px 12px rgb(11 31 58 / 0.06);
+  --shadow-lift: 0 8px 24px rgb(11 31 58 / 0.12), 0 2px 6px rgb(11 31 58 / 0.08);
+  --shadow-ring: 0 0 0 4px rgb(201 162 39 / 0.35);
+
+  /* Spacing scale (density 6/10) */
+  --spacing-section: clamp(3.5rem, 8vw, 6rem);
+
+  /* Motion */
+  --animate-pulse-ring: pulse-ring 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(18 140 70 / 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgb(18 140 70 / 0);
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-navy-900);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* Anchored sections must clear the sticky navbar when scrolled to. */
+  section[id],
+  div[id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-navy-900);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .on-navy :focus-visible {
+    outline-color: var(--color-gold-400);
+  }
+
+  [dir="rtl"] body,
+  [dir="rtl"] .ur {
+    font-family: var(--font-urdu);
+    line-height: 2.1;
+  }
+
+  ::selection {
+    background: var(--color-gold-100);
+    color: var(--color-navy-900);
+  }
+
+  /* Prices and counters keep their columns aligned. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Glassmorphism per MASTER.md: blur 10-20px, 1px white/20 border. */
+  .glass {
+    background: rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgb(255 255 255 / 0.24);
+    box-shadow: 0 8px 32px rgb(7 20 38 / 0.28);
+  }
+
+  .glass-light {
+    background: rgb(255 255 255 / 0.86);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid rgb(11 31 58 / 0.08);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.6875rem 1.375rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      border-color 200ms ease,
+      transform 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    background: var(--color-navy-900);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: var(--color-navy-800);
+  }
+
+  /* Navy text on gold — white on gold would be 2.42:1. */
+  .btn-gold {
+    background: var(--color-gold-500);
+    color: var(--color-navy-900);
+  }
+  .btn-gold:hover {
+    background: var(--color-gold-400);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-navy-900);
+    border: 2px solid var(--color-navy-900);
+  }
+  .btn-ghost:hover {
+    background: var(--color-navy-900);
+    color: var(--color-paper);
+  }
+
+  .on-navy .btn-ghost {
+    color: var(--color-gold-400);
+    border-color: var(--color-gold-400);
+  }
+  .on-navy .btn-ghost:hover {
+    background: var(--color-gold-400);
+    color: var(--color-navy-900);
+  }
+
+  .btn-whatsapp {
+    background: var(--color-whatsapp);
+    color: #ffffff;
+  }
+  .btn-whatsapp:hover {
+    background: #0b6a34;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.6875rem 0.875rem;
+    font-size: 1rem;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+    border-radius: 10px;
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .field:hover {
+    border-color: var(--color-navy-800);
+  }
+
+  .field:focus-visible {
+    outline: 2px solid var(--color-navy-900);
+    outline-offset: 1px;
+    box-shadow: var(--shadow-ring);
+  }
+
+  .field[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--color-navy-900);
+  }
+
+  .field-error {
+    color: var(--color-danger);
+  }
+
+  /* The footer newsletter sits on navy-900: #b91c1c is only 2.5:1 there, and a
+     navy label on a navy background is invisible. */
+  .on-navy .label {
+    color: var(--color-navy-100);
+  }
+  .on-navy .field-error {
+    color: #f4b8b8;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    /* gold-600 is 4.22:1 on panel — 12px bold needs 4.5, so eyebrows go one step darker. */
+    color: var(--color-gold-700);
+  }
+
+  .on-navy .eyebrow {
+    color: var(--color-gold-400);
+  }
+
+  .card-surface {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hairline-gold {
+    height: 2px;
+    width: 3rem;
+    background: linear-gradient(90deg, var(--color-gold-500), var(--color-gold-100));
+    border-radius: 999px;
+  }
+
+  /*
+   * Range control for the installment calculator: 44px hit area, gold-filled
+   * track driven by the inline `--range-pct` custom property.
+   */
+  .lpe-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 44px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .lpe-range::-webkit-slider-runnable-track {
+    height: 10px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--color-gold-500) var(--range-pct, 50%),
+      var(--color-surface) var(--range-pct, 50%)
+    );
+  }
+
+  .lpe-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    margin-top: -9px;
+    border: 3px solid var(--color-gold-400);
+    border-radius: 999px;
+    background: var(--color-navy-900);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .lpe-range::-moz-range-track {
+    height: 10px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 999px;
+    background: var(--color-surface);
+  }
+
+  .lpe-range::-moz-range-progress {
+    height: 10px;
+    border-radius: 999px;
+    background: var(--color-gold-500);
+  }
+
+  .lpe-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--color-gold-400);
+    border-radius: 999px;
+    background: var(--color-navy-900);
+  }
+
+  .lpe-range:focus-visible {
+    outline: 2px solid var(--color-navy-900);
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+}
+
+/*
+ * Reduced motion: MASTER.md requires the final state to render immediately.
+ * Smooth scrolling and the pulse ring are the two things still moving here.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

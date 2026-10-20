@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 534" role="img" aria-label="Lahore Prime Estates placeholder image">
+  <rect width="800" height="534" fill="#0b1f3a"/>
+  <path d="M0 0h800v534H0z" fill="url(#g)"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123156"/>
+      <stop offset="1" stop-color="#071426"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="#c9a227" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M250 300v-70l150-105 150 105v70"/>
+    <path d="M290 300v120h220V300"/>
+    <path d="M365 420v-70h70v70"/>
+  </g>
+  <text x="400" y="492" text-anchor="middle" fill="#d4af37" font-family="Georgia, serif" font-size="30" letter-spacing="2">Lahore Prime Estates</text>
+</svg>
