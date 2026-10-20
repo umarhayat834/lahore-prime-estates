@@ -382,3 +382,16 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * Motion writes `opacity: 0` inline on the server, so a visitor whose JS never
+ * runs — a blocked bundle on a patchy connection, say — would otherwise be
+ * served an invisible hero headline. Only reachable when scripting is off.
+ */
+@media (scripting: none) {
+  [style*="opacity: 0"],
+  [style*="opacity:0"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
