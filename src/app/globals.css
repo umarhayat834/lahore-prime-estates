@@ -395,3 +395,14 @@
     transform: none !important;
   }
 }
+
+/*
+ * Counterpart to the motion probe in layout.tsx. While the page is not being
+ * painted, no animation is allowed to keep content hidden. `!important` is what
+ * lets this outrank both Motion's inline styles and its animation effects.
+ */
+html[data-motion="off"] [style*="opacity: 0"],
+html[data-motion="off"] [style*="opacity:0"] {
+  opacity: 1 !important;
+  transform: none !important;
+}

@@ -97,10 +97,21 @@ const organisationLd = {
   ],
 };
 
+/**
+ * Motion hides content with an inline `opacity: 0` and reveals it through the
+ * Web Animations timeline, which Chrome pauses entirely while a page is hidden.
+ * Anything rendered without painting — an offscreen preview, a print pass, a
+ * screenshot bot — would therefore show a blank page, so this flag lets
+ * globals.css force content to its final state until the page is really visible.
+ */
+const motionProbe =
+  'var d=document.documentElement,m=function(){d.dataset.motion=document.visibilityState==="visible"?"on":"off"};m();addEventListener("visibilitychange",m);';
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-paper text-ink antialiased">
+        <script dangerouslySetInnerHTML={{ __html: motionProbe }} />
         <LocaleProvider>
           <Navbar />
           <main id="main">
